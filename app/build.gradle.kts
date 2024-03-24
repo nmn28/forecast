@@ -58,7 +58,7 @@ android {
     }
 }
 extra["retrofit_version"] = "2.9.0"
-extra["okhttp_version"] = "4.10.0"
+extra["okhttp_version"] = "4.12.0"
 extra["richtext_version"] = "0.16.0"
 
 val retrofit_version: String by extra
@@ -75,21 +75,21 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
-    implementation("androidx.compose.runtime:runtime-livedata:1.6.2")
+    implementation("androidx.compose.runtime:runtime-livedata:1.6.4")
     // Navigation Fragment & UI KTX already covered by navigation-compose
-    implementation("androidx.compose.ui:ui:1.6.2")
-    implementation("androidx.compose.material:material:1.6.2")
-    implementation("androidx.compose.ui:ui-tooling-preview:1.6.2")
-    implementation("androidx.compose.material:material-icons-core:1.6.2")
-    implementation("androidx.compose.material:material-icons-extended:1.6.2")
-    implementation("androidx.compose.material3:material3:1.2.0")
+    implementation("androidx.compose.ui:ui:1.6.4")
+    implementation("androidx.compose.material:material:1.6.4")
+    implementation("androidx.compose.ui:ui-tooling-preview:1.6.4")
+    implementation("androidx.compose.material:material-icons-core:1.6.4")
+    implementation("androidx.compose.material:material-icons-extended:1.6.4")
+    implementation("androidx.compose.material3:material3:1.2.1")
     implementation("com.google.accompanist:accompanist-pager:0.33.2-alpha")
-    implementation("androidx.compose.animation:animation:1.6.2")
+    implementation("androidx.compose.animation:animation:1.6.4")
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-    implementation("com.squareup.okhttp3:okhttp:4.10.0")
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
     implementation("com.google.code.gson:gson:2.10.1")
-    implementation("com.google.firebase:firebase-firestore-ktx:24.10.2")
+    implementation("com.google.firebase:firebase-firestore-ktx:24.11.0")
     implementation("io.coil-kt:coil:2.3.0")
     implementation ("io.coil-kt:coil-compose:2.3.0")
     implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
@@ -103,7 +103,7 @@ dependencies {
 
     // System bars customization
     implementation ("com.google.accompanist:accompanist-systemuicontroller:0.28.0")
-    implementation ("androidx.compose.ui:ui-viewbinding:1.6.2")
+    implementation ("androidx.compose.ui:ui-viewbinding:1.6.4")
     implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
 
     // Import the BoM for the Firebase platform

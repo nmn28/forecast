@@ -3,44 +3,81 @@ package com.example.forecast
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.BottomNavigation
+import androidx.compose.material.BottomNavigationItem
+import androidx.compose.material.Button
+import androidx.compose.material.Divider
+import androidx.compose.material.DrawerValue
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.FabPosition
+import androidx.compose.material.FloatingActionButton
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.ModalBottomSheetLayout
+import androidx.compose.material.ModalBottomSheetValue
+import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.unit.dp
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import androidx.navigation.NavController
-import com.example.forecast.ui.explore.ExploreScreen
-import com.example.forecast.ui.finances.FinancesScreen
-import com.example.forecast.ui.notifications.NotificationsScreen
-import com.example.forecast.ui.profile.ProfileScreen
-import com.example.forecast.ui.watchlists.WatchlistsScreen
+import androidx.compose.material.icons.filled.AccountBalanceWallet
+import androidx.compose.material.icons.filled.CalendarMonth
+import androidx.compose.material.icons.filled.Computer
+import androidx.compose.material.icons.filled.CurrencyExchange
+import androidx.compose.material.icons.filled.Explore
+import androidx.compose.material.icons.filled.FoodBank
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Pets
+import androidx.compose.material.icons.filled.RestoreFromTrash
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Send
+import androidx.compose.material.icons.filled.Storefront
+import androidx.compose.material.icons.filled.ViewList
+import androidx.compose.material.icons.filled.WbSunny
+import androidx.compose.material.rememberDrawerState
+import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.compose.ui.tooling.preview.Preview
-import kotlinx.coroutines.launch
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.forecast.ui.ai.aiScreen
 import com.example.forecast.ui.custompicker.CustomPicker
 import com.example.forecast.ui.custompicker.PickerItem
+import com.example.forecast.ui.explore.ExploreScreen
 import com.example.forecast.ui.finances.FinanceViewModel
+import com.example.forecast.ui.finances.FinancesScreen
 import com.example.forecast.ui.finances.wallet.CreditCard
 import com.example.forecast.ui.finances.wallet.SelectedCreditCardScreen
 import com.example.forecast.ui.finances.wallet.WalletScreen
 import com.example.forecast.ui.finances.wallet.sampleTransactions
+import com.example.forecast.ui.notifications.NotificationsScreen
+import com.example.forecast.ui.profile.ProfileScreen
 import com.example.forecast.ui.sidemenu.SideMenuScreen
+import com.example.forecast.ui.watchlists.WatchlistsScreen
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -52,24 +89,39 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+enum class Screens {
+    AI,
+    CREDIT_CARD,
+    EXPLORE,
+    FINANCES,
+    NOTIFICATIONS,
+    PROFILE,
+    WALLET,
+    WATCH_LISTS;
+
+    val icon: ImageVector?
+        get() = when (this) {
+            WATCH_LISTS -> Icons.Default.ViewList
+            EXPLORE -> Icons.Default.Explore
+            FINANCES -> Icons.Default.AccountBalanceWallet
+            AI -> Icons.Default.Computer
+            NOTIFICATIONS -> Icons.Default.Notifications
+            PROFILE -> Icons.Default.Person
+            else -> null
+        }
+}
+
+
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
 fun MainScreen() {
     val navController = rememberNavController()
-    val screens = listOf("watchlists", "explore", "finances", "ai", "notifications", "profile")
+  //  val screens = listOf("watchlists", "explore", "finances", "ai", "notifications", "profile")
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val coroutineScope = rememberCoroutineScope()
     val financeViewModel: FinanceViewModel = viewModel()
 
 // Define screenTitles map
-    val screenTitles = mapOf(
-        "watchlists" to "Watchlists",
-        "explore" to "Explore",
-        "finances" to "Finances",
-        "ai" to "ai",
-        "notifications" to "Notifications",
-        "profile" to "Profile"
-    )
     // Bottom sheet state with skipHalfExpanded
     val sheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
@@ -136,7 +188,20 @@ fun MainScreen() {
         Scaffold(
             topBar = {
                 CenterAlignedTopAppBar(
-                    title = { Text(text = screenTitles[navController.currentBackStackEntryAsState().value?.destination?.route] ?: "") },
+                    title = { Text(text =
+                       navController.currentBackStackEntryAsState().value?.destination?.route?.let {
+                           when (it) {
+                               Screens.WATCH_LISTS.name -> "Watchlists"
+                               Screens.EXPLORE.name -> "Explore"
+                               Screens.FINANCES.name -> "Finances"
+                               Screens.AI.name -> "ai"
+                               Screens.NOTIFICATIONS.name -> "Notifications"
+                               Screens.PROFILE.name -> "Profile"
+                               else ->  ""
+                           }
+                       } ?: "")
+                    },
+                    //title = { Text(text = screenTitles[navController.currentBackStackEntryAsState().value?.destination?.route] ?: "") },
                     actions = {
                         IconButton(onClick = { /* Handle search click */ }) {
                             Icon(Icons.Filled.Search, contentDescription = "Search")
@@ -174,20 +239,18 @@ fun MainScreen() {
             content = { paddingValues ->
                 NavHost(
                     navController = navController,
-                    startDestination = screens.first(),
+                    startDestination = Screens.WATCH_LISTS.name,
                     modifier = Modifier.padding(paddingValues)
                 ) {
-                    composable(screens[0]) { WatchlistsScreen() }
-                    composable(screens[1]) { ExploreScreen() }
-                    composable(screens[2]) { FinancesScreen(navController) }
-                    composable(screens[3]) { aiScreen() }
-                    composable(screens[4]) { NotificationsScreen() }
-                    composable(screens[5]) { ProfileScreen() }
-                    composable("wallet") {
-                        WalletScreen(viewModel = financeViewModel, navController = navController)
-                    }
+                    composable(Screens.WATCH_LISTS.name) { WatchlistsScreen() }
+                    composable(Screens.EXPLORE.name) { ExploreScreen() }
+                    composable(Screens.FINANCES.name) { FinancesScreen(navController) }
+                    composable(Screens.AI.name) { aiScreen() }
+                    composable(Screens.NOTIFICATIONS.name) { NotificationsScreen() }
+                    composable(Screens.PROFILE.name) { ProfileScreen() }
+                    composable(Screens.WALLET.name) { WalletScreen(viewModel = financeViewModel, navController = navController) }
                     composable(
-                        "${Destinations.SelectedCreditCardScreen}/{creditCardJson}",
+                        "${Screens.CREDIT_CARD.name}?creditCardJson={creditCardJson}",
                         arguments = listOf(navArgument("creditCardJson") { type = NavType.StringType })
                     ) { backStackEntry ->
                         val creditCardJson =
@@ -205,12 +268,12 @@ fun MainScreen() {
         )
     }
 }
-
+/*
 object Destinations {
     const val WalletScreen = "wallet"
     const val SelectedCreditCardScreen = "selectedCreditCard"
 }
-
+*/
 @Composable
 fun DrawerContent() {
     Column(modifier = Modifier.fillMaxSize()) {
@@ -219,16 +282,16 @@ fun DrawerContent() {
         // Add more drawer items here
     }
 }
-
+fun dbg(title: String) { println("dbg "+title)}
 @Composable
 fun BottomNavigationBar(navController: NavController) {
     val items = listOf(
-        NavigationItem("watchlists", Icons.Default.ViewList),
-        NavigationItem("explore", Icons.Default.Explore),
-        NavigationItem("finances", Icons.Default.AccountBalanceWallet),
-        NavigationItem("ai", Icons.Default.Computer),
-        NavigationItem("notifications", Icons.Default.Notifications),
-        NavigationItem("profile", Icons.Default.Person)
+        NavigationItem(Screens.WATCH_LISTS.name, Screens.WATCH_LISTS.icon!!),
+        NavigationItem(Screens.EXPLORE.name, Screens.EXPLORE.icon!!),
+        NavigationItem(Screens.FINANCES.name, Screens.FINANCES.icon!!),
+        NavigationItem(Screens.AI.name, Screens.AI.icon!!),
+        NavigationItem(Screens.NOTIFICATIONS.name, Screens.NOTIFICATIONS.icon!!),
+        NavigationItem(Screens.PROFILE.name, Screens.PROFILE.icon!!)
     )
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
 
@@ -239,7 +302,6 @@ fun BottomNavigationBar(navController: NavController) {
                 selected = currentRoute == item.route,
                 onClick = {
                     navController.navigate(item.route) {
-                        // This makes sure the back button takes you to the initial screen
                         popUpTo(navController.graph.startDestinationId)
                         // Avoid multiple copies of the same screen
                         launchSingleTop = true

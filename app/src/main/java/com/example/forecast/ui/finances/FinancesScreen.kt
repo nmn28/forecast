@@ -1,13 +1,12 @@
 package com.example.forecast.ui.finances
 
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
@@ -19,17 +18,11 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.BarChart
-import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.CreditCard
-import androidx.compose.material.icons.filled.CurrencyExchange
+import androidx.compose.material.icons.filled.Download
+import androidx.compose.material.icons.filled.Money
 import androidx.compose.material.icons.filled.RemoveCircle
 import androidx.compose.material.icons.filled.Upload
-import androidx.compose.material.icons.filled.Download
-import androidx.compose.material.icons.filled.Gavel
-import androidx.compose.material.icons.filled.Money
-import androidx.compose.material.icons.filled.Notifications
-import androidx.compose.material.icons.filled.Pets
-import androidx.compose.material.icons.filled.Storefront
 import androidx.compose.material.icons.filled.Wallet
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -40,16 +33,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import com.example.forecast.ui.custompicker.CustomPicker
 import com.example.forecast.ui.custompicker.PickerItem
 import com.example.forecast.ui.finances.wallet.CreditCard
-import com.example.forecast.ui.finances.wallet.SelectedCreditCardScreen
 import com.example.forecast.ui.finances.wallet.WalletScreen
-
-
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -142,9 +129,7 @@ fun FinancesScreen(navController: NavController) {
 
             // CustomPicker placed below the row of buttons
             val items = listOf(
-                PickerItem("Wallet", Icons.Default.Wallet) {
-                    navController.navigate("WalletScreen")
-                },
+                PickerItem("Wallet", Icons.Default.Wallet) { WalletScreen(viewModel = viewModel(), navController = navController)  },//navController.navigate(Screens.WALLET.name) },
                 PickerItem("Investments", Icons.Default.Money) { },
                 PickerItem("Analytics", Icons.Default.BarChart) { }
             )
