@@ -28,7 +28,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.AttachMoney
 import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.CreditCard
@@ -56,7 +56,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.forecast.Screens
-import com.example.forecast.dbg
 import com.example.forecast.ui.finances.FinanceViewModel
 import com.google.gson.Gson
 import java.text.SimpleDateFormat
@@ -76,7 +75,7 @@ fun SelectedCreditCardScreen(
                 title = { Text("Selected Credit Card") },
                 navigationIcon = {
                     IconButton(onClick = onDismiss) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                     }
                 },
                 actions = {
@@ -206,6 +205,7 @@ fun CreditCardStackScreen(creditCards: List<CreditCard>) {
 fun CreditCardScreen(creditCard: CreditCard, modifier: Modifier = Modifier) {
     Box(
         modifier = Modifier
+            .then(modifier)
             .width(360.dp)
             .height(190.dp)
             .shadow(10.dp, RoundedCornerShape(15.dp))
@@ -453,26 +453,21 @@ fun WalletScreen(viewModel: FinanceViewModel, navController: NavController) {
     ) {
         item {
             forecastCashCard?.let { card ->
-                Box(modifier = Modifier.clickable { navigateToSelectedCard(navController, card) }) {
-                    CreditCardScreen(
-                        creditCard = card,
-                        modifier = Modifier.clickable {
-                            navigateToSelectedCard(navController, card)
-                        }
-                    )
-                }
-            }
-        }
-        items(creditCards) { card ->
-            Box(modifier = Modifier.clickable { navigateToSelectedCard(navController, card) }) {
                 CreditCardScreen(
                     creditCard = card,
                     modifier = Modifier.clickable {
-                        dbg("click!!")
                         navigateToSelectedCard(navController, card)
                     }
                 )
             }
+        }
+        items(creditCards) { card ->
+            CreditCardScreen(
+                creditCard = card,
+                modifier = Modifier.clickable {
+                    navigateToSelectedCard(navController, card)
+                }
+            )
         }
     }
 }

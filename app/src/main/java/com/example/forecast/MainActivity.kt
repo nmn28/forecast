@@ -11,21 +11,37 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.BottomNavigation
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.BottomNavigationItem
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.Button
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.Divider
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.DrawerValue
 import androidx.compose.material.ExperimentalMaterialApi
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.FabPosition
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.FloatingActionButton
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.Icon
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.IconButton
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.MaterialTheme
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.ModalBottomSheetLayout
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.ModalBottomSheetValue
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.Scaffold
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Send
+import androidx.compose.material.icons.automirrored.filled.ViewList
 import androidx.compose.material.icons.filled.AccountBalanceWallet
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Computer
@@ -38,11 +54,11 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Pets
 import androidx.compose.material.icons.filled.RestoreFromTrash
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Send
 import androidx.compose.material.icons.filled.Storefront
-import androidx.compose.material.icons.filled.ViewList
 import androidx.compose.material.icons.filled.WbSunny
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.rememberDrawerState
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -98,17 +114,6 @@ enum class Screens {
     PROFILE,
     WALLET,
     WATCH_LISTS;
-
-    val icon: ImageVector?
-        get() = when (this) {
-            WATCH_LISTS -> Icons.Default.ViewList
-            EXPLORE -> Icons.Default.Explore
-            FINANCES -> Icons.Default.AccountBalanceWallet
-            AI -> Icons.Default.Computer
-            NOTIFICATIONS -> Icons.Default.Notifications
-            PROFILE -> Icons.Default.Person
-            else -> null
-        }
 }
 
 
@@ -154,7 +159,7 @@ fun MainScreen() {
                         Spacer(modifier = Modifier.weight(1f)) // This spacer will also take up all available space
 
                         // Right icon
-                        Icon(Icons.Default.Send, contentDescription = "Send")
+                        Icon(Icons.AutoMirrored.Filled.Send, contentDescription = "Send")
                     }
                     Divider()
                     val items = listOf(
@@ -201,7 +206,6 @@ fun MainScreen() {
                            }
                        } ?: "")
                     },
-                    //title = { Text(text = screenTitles[navController.currentBackStackEntryAsState().value?.destination?.route] ?: "") },
                     actions = {
                         IconButton(onClick = { /* Handle search click */ }) {
                             Icon(Icons.Filled.Search, contentDescription = "Search")
@@ -249,8 +253,7 @@ fun MainScreen() {
                     composable(Screens.NOTIFICATIONS.name) { NotificationsScreen() }
                     composable(Screens.PROFILE.name) { ProfileScreen() }
                     composable(Screens.WALLET.name) { WalletScreen(viewModel = financeViewModel, navController = navController) }
-                    composable(
-                        "${Screens.CREDIT_CARD.name}?creditCardJson={creditCardJson}",
+                    composable("${Screens.CREDIT_CARD.name}?creditCardJson={creditCardJson}",
                         arguments = listOf(navArgument("creditCardJson") { type = NavType.StringType })
                     ) { backStackEntry ->
                         val creditCardJson =
@@ -268,12 +271,7 @@ fun MainScreen() {
         )
     }
 }
-/*
-object Destinations {
-    const val WalletScreen = "wallet"
-    const val SelectedCreditCardScreen = "selectedCreditCard"
-}
-*/
+
 @Composable
 fun DrawerContent() {
     Column(modifier = Modifier.fillMaxSize()) {
@@ -282,16 +280,15 @@ fun DrawerContent() {
         // Add more drawer items here
     }
 }
-fun dbg(title: String) { println("dbg "+title)}
 @Composable
 fun BottomNavigationBar(navController: NavController) {
     val items = listOf(
-        NavigationItem(Screens.WATCH_LISTS.name, Screens.WATCH_LISTS.icon!!),
-        NavigationItem(Screens.EXPLORE.name, Screens.EXPLORE.icon!!),
-        NavigationItem(Screens.FINANCES.name, Screens.FINANCES.icon!!),
-        NavigationItem(Screens.AI.name, Screens.AI.icon!!),
-        NavigationItem(Screens.NOTIFICATIONS.name, Screens.NOTIFICATIONS.icon!!),
-        NavigationItem(Screens.PROFILE.name, Screens.PROFILE.icon!!)
+        NavigationItem(Screens.WATCH_LISTS.name, Icons.AutoMirrored.Filled.ViewList),
+        NavigationItem(Screens.EXPLORE.name, Icons.Default.Explore),
+        NavigationItem(Screens.FINANCES.name, Icons.Default.AccountBalanceWallet),
+        NavigationItem(Screens.AI.name, Icons.Default.Computer),
+        NavigationItem(Screens.NOTIFICATIONS.name, Icons.Default.Notifications),
+        NavigationItem(Screens.PROFILE.name, Icons.Default.Person)
     )
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
 
