@@ -195,13 +195,14 @@ fun MainScreen() {
                 CenterAlignedTopAppBar(
                     title = { Text(text =
                        navController.currentBackStackEntryAsState().value?.destination?.route?.let {
-                           when (it) {
+                           when (it.split("?")[0]) {
                                Screens.WATCH_LISTS.name -> "Watchlists"
                                Screens.EXPLORE.name -> "Explore"
                                Screens.FINANCES.name -> "Finances"
                                Screens.AI.name -> "ai"
                                Screens.NOTIFICATIONS.name -> "Notifications"
                                Screens.PROFILE.name -> "Profile"
+                               Screens.CREDIT_CARD.name -> "Finances"
                                else ->  ""
                            }
                        } ?: "")
