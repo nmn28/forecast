@@ -193,6 +193,10 @@ fun MainScreen() {
         Scaffold(
             topBar = {
                 CenterAlignedTopAppBar(
+                    modifier = Modifier.then(
+                        if ((navController.currentBackStackEntryAsState().value?.destination?.route?.split("?") ?: listOf(""))[0] == Screens.CREDIT_CARD.name) Modifier.height(0.dp)
+                        else Modifier
+                    ),
                     title = { Text(text =
                        navController.currentBackStackEntryAsState().value?.destination?.route?.let {
                            when (it.split("?")[0]) {
